@@ -2,9 +2,6 @@
 <project name="module_antsample" default="compile.module.antsample">
   <dirname property="module.antsample.basedir" file="${ant.file.module_antsample}"/>
   
-  <property name="module.jdk.home.antsample" value="${project.jdk.home}"/>
-  <property name="module.jdk.bin.antsample" value="${project.jdk.bin}"/>
-  <property name="module.jdk.classpath.antsample" value="${project.jdk.classpath}"/>
   
   <property name="compiler.args.antsample" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
   
@@ -15,16 +12,13 @@
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
   
-  <path id="antsample.module.production.classpath">
-    <path refid="${module.jdk.classpath.antsample}"/>
-  </path>
+  <path id="antsample.module.production.classpath"/>
   
   <path id="antsample.runtime.production.module.classpath">
     <pathelement location="${antsample.output.dir}"/>
   </path>
   
   <path id="antsample.module.classpath">
-    <path refid="${module.jdk.classpath.antsample}"/>
     <pathelement location="${antsample.output.dir}"/>
   </path>
   
@@ -51,15 +45,15 @@
   
   <target name="compile.module.antsample" depends="compile.module.antsample.production,compile.module.antsample.tests" description="Compile module AntSample"/>
   
-  <target name="compile.module.antsample.production" depends="register.custom.compilers" description="Compile module AntSample; production classes">
+  <target name="compile.module.antsample.production" description="Compile module AntSample; production classes">
     <mkdir dir="${antsample.output.dir}"/>
-    <javac2 destdir="${antsample.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.antsample}/javac">
+    <javac destdir="${antsample.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
       <compilerarg line="${compiler.args.antsample}"/>
       <bootclasspath refid="antsample.module.bootclasspath"/>
       <classpath refid="antsample.module.production.classpath"/>
       <src refid="antsample.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.antsample"/>
-    </javac2>
+    </javac>
     
     <copy todir="${antsample.output.dir}">
       <fileset dir="${module.antsample.basedir}/src">
@@ -69,7 +63,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.antsample.tests" depends="register.custom.compilers,compile.module.antsample.production" description="compile module AntSample; test classes" unless="skip.tests"/>
+  <target name="compile.module.antsample.tests" depends="compile.module.antsample.production" description="compile module AntSample; test classes" unless="skip.tests"/>
   
   <target name="clean.module.antsample" description="cleanup module">
     <delete dir="${antsample.output.dir}"/>
