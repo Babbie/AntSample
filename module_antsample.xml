@@ -26,8 +26,8 @@
     <pathelement location="${antsample.testoutput.dir}"/>
     <pathelement location="${antsample.output.dir}"/>
   </path>
-  
-  
+
+
   <patternset id="excluded.from.module.antsample">
     <patternset refid="ignored.files"/>
   </patternset>
